@@ -11,7 +11,7 @@ services:
       BCRYPT_SALT: ${BCRYPT_SALT}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
-      DB_URL: mysql://${DB_USER}:${DB_PASSWORD}@db:3306
+      DB_URL: mongodb://${DB_USER}:${DB_PASSWORD}@db:27017
     depends_on:
       - migrate
   migrate:
@@ -23,39 +23,33 @@ services:
     working_dir: /app/server
     environment:
       BCRYPT_SALT: ${BCRYPT_SALT}
-      DB_URL: mysql://${DB_USER}:${DB_PASSWORD}@db:3306
+      DB_URL: postgres://${DB_USER}:${DB_PASSWORD}@db:5432
     depends_on:
       db:
         condition: service_healthy
   db:
-    image: mysql
+    image: mongo
     ports:
-      - ${DB_PORT}:3306
+      - ${DB_PORT}:27017
     environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       MONGO_USER: ${DB_USER}
       MONGO_PASSWORD: ${DB_PASSWORD}
-      DB_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mongodb:/var/lib/mongosql/data
     healthcheck:
       test:
         - CMD
-        - mysqladmin
-        - ping
-        - -h
-        - localhost
-        - -u
+        - pg_isready
+        - -q
+        - -d
+        - ${DB_DB_NAME}
+        - -U
         - ${DB_USER}
       timeout: 45s
       interval: 10s
       retries: 10
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 1234:8080
 volumes:
+  postgres: ~
   mongo: ~
-  mysql: ~
