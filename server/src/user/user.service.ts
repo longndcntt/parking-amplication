@@ -10,5 +10,6 @@ export class UserService extends UserServiceBase {
     protected readonly passwordService: PasswordService
   ) {
     super(prisma, passwordService);
+    console.log('ABC')
   }
 }
