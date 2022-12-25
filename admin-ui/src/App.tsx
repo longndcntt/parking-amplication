@@ -25,6 +25,10 @@ import { ParkingList } from "./parking/ParkingList";
 import { ParkingCreate } from "./parking/ParkingCreate";
 import { ParkingEdit } from "./parking/ParkingEdit";
 import { ParkingShow } from "./parking/ParkingShow";
+import { PriceList } from "./price/PriceList";
+import { PriceCreate } from "./price/PriceCreate";
+import { PriceEdit } from "./price/PriceEdit";
+import { PriceShow } from "./price/PriceShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -44,7 +48,7 @@ const App = (): React.ReactElement => {
   return (
     <div className="App">
       <Admin
-        title={"Sample service"}
+        title={"parking-service"}
         dataProvider={dataProvider}
         authProvider={jwtAuthProvider}
         theme={theme}
@@ -85,6 +89,13 @@ const App = (): React.ReactElement => {
           edit={ParkingEdit}
           create={ParkingCreate}
           show={ParkingShow}
+        />
+        <Resource
+          name="Price"
+          list={PriceList}
+          edit={PriceEdit}
+          create={PriceCreate}
+          show={PriceShow}
         />
       </Admin>
     </div>
