@@ -60,3 +60,12 @@ model Parking {
   plate     String?
   updatedAt DateTime  @updatedAt
 }
+
+model Price {
+  amount    Float?
+  createdAt DateTime  @default(now())
+  endAt     String?
+  id        String    @id @default(cuid())
+  startAt   DateTime?
+  updatedAt DateTime  @updatedAt
+}
